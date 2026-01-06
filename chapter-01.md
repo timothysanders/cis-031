@@ -52,6 +52,19 @@
 - Relational database systems are very good for databases that require an accurate record of every transaction
 
 ## 1.3: Query Languages
+### Common queries
+- A **query** is a command for a database to insert/retrieve/update/delete data. A **query language** is a programming language for writing database queries
+- Four common query types are often referred to as **CRUD** operations; Create, Read, Update, Delete
+### Writing queries with SQL
+- **Structured Query Language** (or **SQL**) is the standard query language for relational database systems. Often pronounced 'seekwəl' or "ess queue el" ("S-Q-L")
+- An SQL **statement** is a complete, executable database command
+### Creating tables with SQL
+- The SQL **CREATE TABLE** statement creates a new table by specifying the table and column names, with each column assigned a **data type**. Possible data types may be numeric, textual, or complex
+  - INT stores integer values
+  - DECIMAL stores fractional numeric values
+  - VARCHAR stores textual values
+  - DATE stores year, month, and day
+- Some data types have numbers in parentheses after them, which indicate the size of the data type, for example VARCHAR(10) indicates ten characters, or DECIMAL(10, 3) indicates ten significant digits, including three after the decimal
 ## 1.4: Database Design and Programming
 ## 1.5: MySQL
 ## 1.6: SQL Sandbox
