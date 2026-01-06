@@ -2,7 +2,7 @@
 
 ## 1.1: Database Basics
 ### Data
-- `Data`: numeric, textual, visual, or audio information describing real world systems
+- **Data**: numeric, textual, visual, or audio information describing real world systems
 - Collected and processed to aid in a variety of tasks
 - Data can vary in multiple ways
   - *Scope*: amount of data produced and collected can vary widely
@@ -12,7 +12,7 @@
 - Today most data is **digital**, encoded as ones and zeros on electronic/magnetic media
 - Shift from analog to digital data facilitated the rise of large computer databases
 ### Databases
-- `Database`: a collection of structured data, can be stored on a variety of mediums, but modern databases are invariably stored on computers
+- **Database**: a collection of structured data, can be stored on a variety of mediums, but modern databases are invariably stored on computers
 - Modern databases support trillions of bytes of data and thousands of simultaneous users, so they must be managed with sophisticated tools
   - **Database system**, or a **database management system** (**DBMS**), is software to read/write data in a database
   - **Query** is a request to retrieve or change data in a database. **Query languages** are specialized programming languages designed specifically for database systems
@@ -59,12 +59,12 @@
 - **Structured Query Language** (or **SQL**) is the standard query language for relational database systems. Often pronounced 'seekwəl' or "ess queue el" ("S-Q-L")
 - An SQL **statement** is a complete, executable database command
 ### Creating tables with SQL
-- The SQL **CREATE TABLE** statement creates a new table by specifying the table and column names, with each column assigned a **data type**. Possible data types may be numeric, textual, or complex
-  - INT stores integer values
-  - DECIMAL stores fractional numeric values
-  - VARCHAR stores textual values
-  - DATE stores year, month, and day
-- Some data types have numbers in parentheses after them, which indicate the size of the data type, for example VARCHAR(10) indicates ten characters, or DECIMAL(10, 3) indicates ten significant digits, including three after the decimal
+- The SQL **`CREATE TABLE`** statement creates a new table by specifying the table and column names, with each column assigned a **data type**. Possible data types may be numeric, textual, or complex
+  - `INT` stores integer values
+  - `DECIMAL` stores fractional numeric values
+  - `VARCHAR` stores textual values
+  - `DATE` stores year, month, and day
+- Some data types have numbers in parentheses after them, which indicate the size of the data type, for example `VARCHAR(10)` indicates ten characters, or `DECIMAL(10, 3)` indicates ten significant digits, including three after the decimal
 
 ## 1.4: Database Design and Programming
 ### Conceptual design
@@ -89,5 +89,9 @@
 - Data independence allows for database programming to happen independently of the physical design, at the potential cost of slower performance
 - SQL is the standard relational query language but lacks some important programming features (object orientation, etc.)
 - To simplify the use of SQL with a general purpose language, database programs usually have an **application programming interface**, or **API**, which helps link a programming language to a database 
+
 ## 1.5: MySQL
+### MySQL Server
+- **MySQL** is a relational database system, sponsored by Oracle, which runs on all major platforms and is one of the most popular database systems
+
 ## 1.6: SQL Sandbox
