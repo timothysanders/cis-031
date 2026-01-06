@@ -1,6 +1,6 @@
 # Chapter 7: Database Architecture
 
-## MySQL architecture
+## 7.1: MySQL architecture
 ### Layers
 - **Architecture** describes the components of a computer system and the relationships between the components
 - MySQL components are organized in four layers
