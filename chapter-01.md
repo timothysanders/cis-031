@@ -65,6 +65,29 @@
   - VARCHAR stores textual values
   - DATE stores year, month, and day
 - Some data types have numbers in parentheses after them, which indicate the size of the data type, for example VARCHAR(10) indicates ten characters, or DECIMAL(10, 3) indicates ten significant digits, including three after the decimal
+
 ## 1.4: Database Design and Programming
+### Conceptual design
+- **Database design** is a specification of database objects (tables, columns, data types, indexes, etc.), it also refers to the process of developing that specification
+- For small databases, the process can be informal/unstructured. For large, complex databases, the process has three phases
+  1. **Conceptual design**: specifies database requirements without regard to any specific database system. Requirements are represented as entities/relationships/attributes. An entity might be a person/place/activity/thing, a relationship is a link between entities, and an attribute is a descriptive property of an entity. May also be called analysis, data modeling, or requirements definition/gathering
+     - Entities, relationships, and attributes are depicted in **ER diagrams** (entity relationship diagrams)
+     - ![Sample ER diagram](images/figure-1.4.1.png)
+  2. **Logical design**: implements database requirements in a specific database system, converting entities/relationships/attributes into tables/keys/columns. A **key** is a column used to identify individual rows of a table. These tables/keys/columns are specified in SQL with `CREATE TABLE` statements
+     - Logical design is depicted in a **table diagram**, similar to an ER diagram, but more detailed
+     - Rectangles represent tables, with table names at the top
+     - Text within rectangles below the table name represents columns
+     - Bullets indicate key columns
+     - Arrows between tables indicate columns that refer to keys
+     - ![Sample table diagram](images/figure-1.4.2.png)
+     - This logical design is called a database **schema**
+  3. **Physical design**: adds indexes and specifies how tables are stored on storage media. This physical design is specified with SQL statements such as `CREATE INDEX` and, like the logical design, is specific to a database system
+     - The physical design may be depicted as a diagram, but the logical design is more important for the database users/programmers
+     - While a logical design affects the query result, a physical design impacts the query processing speed (but never the query result itself). This principle of physical design not impacting query results is called **data independence**
+     - Data independence allows database designers to tune query performance without changing application programs
+### Programming
+- Data independence allows for database programming to happen independently of the physical design, at the potential cost of slower performance
+- SQL is the standard relational query language but lacks some important programming features (object orientation, etc.)
+- To simplify the use of SQL with a general purpose language, database programs usually have an **application programming interface**, or **API**, which helps link a programming language to a database 
 ## 1.5: MySQL
 ## 1.6: SQL Sandbox
