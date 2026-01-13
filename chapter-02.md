@@ -408,3 +408,91 @@
           ON UPDATE SET NULL
   );
   ```
+
+## 2.12: Constraints
+### Column and table constraints
+- A **constraint** is a rule that governs allowable values in a database, and can be based on relational or business rules. These constraints are implemented with special keywords in the `CREATE TABLE` statement. Inserts/updates/deletes that violate a constraint are rejected
+- `NOT NULL`, `DEFAULT`, `PRIMARY KEY`, and `FOREIGN KEY` are all examples of constraints
+- A **column constraint** appears after the column name and data type in the `CREATE TABLE` statement and govern values in a single column (example, `NOT NULL`)
+- A **table constraint** appears in a separate clause of the `CREATE TABLE` statement and governs values in one or more columns (example, `FOREIGN KEY`)
+- Some constraints can be defined as either column or table constraints
+- ```mysql
+  CREATE TABLE Employee (
+     ID             INT,
+     Name           VARCHAR(20) NOT NULL,
+     DepartmentCode INT DEFAULT 999,
+     PRIMARY KEY (ID),
+     FOREIGN KEY (DepartmentCode) REFERENCES Department (Code)
+  );
+  ```
+- Note that the `DEFAULT` constraint does not actually limit allowable values in a column, but rather specifies the value that is used when a column is omitted from an `INSERT` statement
+
+### `UNIQUE` constraint
+- The `UNIQUE` constraint ensures values in a column/group of columns are unique
+- If applied to a single column, this may appear in the column declaration or a separate clause
+- When applied to a group of columns, this is a table constraint and must appear in a separate clause
+- MySQL creates an index for each `UNIQUE` constraint, the index stores the values of the unique column/columns in sorted order. When new values are inserted/updated, the index is searched to determine if the value is unique
+- ```mysql
+  CREATE TABLE Department (
+     Code        TINYINT UNSIGNED,
+     Name        VARCHAR(20) UNIQUE,
+     ManagerID   SMALLINT,
+     Appointment DATE,
+     PRIMARY KEY (Code),
+     UNIQUE (ManagerID, Appointment)
+  );
+  ```
+
+### `CHECK` constraint
+- Specifies an expression of one or more columns of a table, the constraint is violated when the expression is FALSE and satisfied when the expression is either TRUE or NULL
+- When the expression contains one column, `CHECK` may appear in the column declaration or a separate clause
+- When the expression contains multiple columns, `CHECK` is a table constraint and must be a separate clause
+- ```mysql
+  CREATE TABLE Department (
+     Code          TINYINT UNSIGNED,
+     Name          VARCHAR(20),
+     ManagerID     SMALLINT,
+     AdminAssistID SMALLINT,
+     Size          VARCHAR(6) CHECK (Size IN ('small', 'medium', 'large')),
+     PRIMARY KEY (Code),
+     CHECK (ManagerID >= 1000 AND ManagerID <> AdminAssistID) 
+  );
+  ```
+
+### Constraint names
+- Table constraints may be named, using the `CONSTRAINT` keyword, followed by the constraint name and declaration. If no name is provided, the database generates a default name. Constraint names will appear in error messages when the constraints are violated
+- Column constraints typically cannot be named, with the exception of the `CHECK` column constraint
+- ```mysql
+  CREATE TABLE Employee (
+      ID                INT,
+      Name              VARCHAR(20) NOT NULL,
+      DepartmentCode    INT DEFAULT 999,
+      CONSTRAINT EmployeePK PRIMARY KEY (ID),
+      CONSTRAINT EmployeeDepartmentFK FOREIGN KEY (DepartmentCode) REFERENCES Department (Code)
+  );
+  ```
+- If you specify constraint names, the `SHOW CREATE TABLE TableName` command will show explicitly named constraints, but does not show default names. To see the default names, use information schema tables
+- ```mysql
+  SELECT Column_Name, Constraint_Name
+  FROM Information_Schema.Key_Column_Usage
+  WHERE Table_Name = 'TableName';
+  ```
+
+### Adding and dropping constraints
+- Constraints can be added and dropped with the `ALTER TABLE TableName` followed by `ADD`, `DROP`, or `CHANGE`
+- Unnamed constraints such as `NOT NULL` and `DEFAULT` are added/dropped with a `CHANGE` clause
+  - `CHANGE CurrentColumnName NewColumnName NewDataType [ConstraintDeclaration]`
+- Named constraints can be added with an `ADD` clause
+  - `ADD [CONSTRAINT ConstraintName] PRIMARY KEY (Column1, Column2 ...)`
+  - `ADD [CONSTRAINT ConstraintName] FOREIGN KEY (Column1, Column2 ...) REFERENCES TableName (Column)`
+  - `ADD [CONSTRAINT ConstraintName] UNIQUE (Column1, Column2 ...)`
+  - `ADD [CONSTRAINT ConstraintName] CHECK (expression)`
+- Adding constraints will fail if the table has data that violates the constraint
+- Named constraints can be dropped with a `DROP` clause
+  - `DROP PRIMARY KEY`
+  - `DROP FOREIGN KEY ConstraintName`
+  - `DROP INDEX ConstraintName` (drops `UNIQUE` constraints)
+  - `DROP CHECK ConstraintName`
+  - `DROP CONSTRAINT ConstraintName` (drops any named constraint)
+- Dropping a table will fail if a foreign key references the table's primary key, so either the foreign key constraint or the foreign key table must be dropped
+- 
