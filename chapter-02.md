@@ -321,3 +321,40 @@
   );
   ```
 - MySQL allows you to insert specific values into auto-increment columns (and automatically replaces NULL and 0 with the next value in the sequence), but this can be misleading and should be avoided
+
+## 2.10: Foreign keys
+### Foreign keys
+- A **foreign key** is a column, or group of columns, that refer to a primary key
+- Data types of foreign and primary keys must be the same, but the names can be different
+- Foreign key values may be NULL and don't necessarily have to be unique, but if a foreign key has a value that is not NULL, it must match some value of the referenced primary key
+- In table diagrams, a foreign key is referenced by an arrow, starting at the foreign key and pointing to the table with the referenced primary key
+
+### Composite foreign keys
+- A foreign key that refers to a composite primary key must also be composite, with all columns of a composite foreign key either being NULL or matching some primary key value
+- ![Example table diagram](images/figure-2.10.1.png)
+
+### Special cases
+- Multiple foreign keys may refer to the same primary key, and a foreign key may refer to the primary key of the same table
+
+### Foreign key constraint
+- A foreign key constraint is created with a foreign key clause in the `CREATE TABLE` statement. This consists of the `FOREIGN KEY` keyword followed by the foreign key column and the `REFERENCES` keyword followed by the referenced table and primary key column
+- This clause may appear anywhere in the `CREATE TABLE` statement, but is usually following all column definitions
+- When this foreign key constraint is specified, the database system ensures that the non-NULL foreign key values always match the referenced primary key, otherwise the insert/update/delete is rejected
+- ```mysql
+  CREATE TABLE Album (
+      ID INT,
+      Title VARCHAR(60),
+      ReleaseYear INT,
+      PRIMARY KEY (ID)
+  );
+  
+  CREATE TABLE Song (
+      ID INT,
+      Title VARCHAR(60),
+      Artist VARCHAR(60),
+      AlbumID INT,
+      PRIMARY KEY (ID),
+      FOREIGN KEY (AlbumID) REFERENCES Album (ID)
+  );
+  ```
+
