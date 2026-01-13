@@ -215,3 +215,54 @@
   | Character     | 'string'              | CHAR(N)        | N bytes                                                                   | Fixed-length string of length N; 0 &le; N &le; 255                                                    |
   | Character     | 'string'              | VARCHAR(N)     | Number of characters<br>+ 1 byte if N &le; 255<br>+ 2 bytes if N &gt; 255 | Variable-length string with maximum N characters; 0 &le; N &le; 65,535                                |
   | Character     | 'string'              | TEXT           | Number of characters<br>+ 2 bytes                                         | Variable-length string with maximum 65,535 characters                                                 |
+
+## 2.7: Null values
+### NULL
+- **NULL** is a special value that represents unknown or inapplicable data. This is not the same as zero for numeric numbers or empty strings for character data types
+
+### NOT NULL constraint
+- Columns may contain NULL values by default, but in some cases, a business rule may require that a column should never contain NULL (such as a name of an employee for a business)
+- The **NOT NULL** constraint prevents a column from having a NULL value, any statement trying to insert a NULL value will be rejected
+- Example syntax of the `NOT NULL` constraint
+- ```sql
+  CREATE TABLE Employee (
+      ID        SMALLINT UNSIGNED,
+      Name      VARCHAR(60) NOT NULL,
+      BirthDate DATE,
+      Salary    DECIMAL(7, 20)
+  );
+  ```
+
+### NULL arithmetic and comparisons
+- When doing arithmetic or comparing with one or more NULL values, the result is NULL. If a WHERE clause evaluates to NULL for a row, the row is not selected
+
+### IS NULL operator
+- Because the comparison operators return NULL when either operand is NULL, comparison operators cannot be used to select NULL values. For these scenarios, you need to use `IS NULL` and `IS NOT NULL` operators to retrieve those rows/values
+- Example syntax of the `IS NULL` operator
+- ```sql
+  SELECT *
+  FROM Country
+  WHERE IndepYear IS NULL;
+  ```
+- Example syntax of the `IS NOT NULL` operator
+- ```sql
+  SELECT *
+  FROM Country
+  WHERE Population IS NOT NULL;
+  ```
+
+### NULL logic
+- In traditional math, expressions are always TRUE or FALSE, though with NULL values involved, you may have TRUE, FALSE, and NULL
+  - TRUE AND TRUE is TRUE
+  - TRUE AND FALSE is FALSE
+  - TRUE AND NULL is NULL
+- | x     | y     | x AND y | x OR y |
+  |-------|-------|---------|--------|
+  | TRUE  | NULL  | NULL    | TRUE   |
+  | NULL  | TRUE  | NULL    | TRUE   |
+  | FALSE | NULL  | FALSE   | NULL   |
+  | NULL  | FALSE | FALSE   | NULL   |
+  | NULL  | NULL  | NULL    | NULL   |
+- MySQL does not have a specific data type for logical values, but rather represents FALSE as 0 and TRUE as 1 in query results
+- Be careful about generalizing the way one database system treats NULL values to others, they are not all the same
+
