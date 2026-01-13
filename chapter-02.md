@@ -358,3 +358,53 @@
   );
   ```
 
+## 2.11: Referential integrity
+### Referential integrity rule
+- A simple or composite foreign key value is **fully NULL** if all columns are NULL. **Referential integrity** is a relational rule that requires foreign key values to either be fully NULL or match some primary key value
+- Foreign keys must obey referential integrity at all times
+- A partially null composite foreign key contains some (but not all) columns that are NULL. These never match a primary key, since primary key columns cannot be NULL. These are generally considered to violate referential integrity
+
+### Referential integrity violations
+- Referential integrity can be violated in four ways
+  1. A primary key is updated
+  2. A foreign key is updated
+  3. A row containing a primary key is deleted
+  4. A row containing a foreign key is inserted
+- Primary key inserts and foreign key deletes never violate referential integrity
+
+### Referential integrity actions
+- An insert, update, or delete that violates referential integrity can be manually corrected, but this is time consuming and error-prone
+- Databases can automatically correct referential integrity violations with four actions, that are specified as SQL constraints
+  - **RESTRICT**: rejects an insert, update, or delete that violates referential integrity
+  - **SET NULL**: sets invalid foreign keys to NULL
+  - **SET DEFAULT**: sets invalid foreign keys to the foreign key default value
+  - **CASCADE**: propagates primary key changes to foreign keys
+- `CASCADE` is different for primary key updates and deletes. If a primary key is deleted, rows containing matching foreign keys are deleted. If a primary key is updated, matching foreign keys are updated to the same value
+
+### `ON UPDATE` and `ON DELETE` clauses
+- For foreign key inserts and updates, MySQL only supports `RESTRICT`, so inserts and updates that violate referential integrity are automatically rejected
+- For primary key updates and deletes, MySQL supports all four actions, which are specified in optional `ON UPDATE` or `ON DELETE` clauses of the `FOREIGN KEY` constraint. `ON UPDATE` or `ON DELETE` are followed by either `RESTRICT`, `SET NULL`, `SET DEFAULT`, or `CASCADE`
+- These clauses specify what happens to the foreign key when the referenced primary key is updated or deleted. If there are multiple foreign keys for a primary key, each one may have different actions specified
+- MySQL limitations on primary key updates and deletes
+  - `RESTRICT` is applied when the `ON UPDATE` or `ON DELETE` clause is omitted.
+  - `SET NULL` cannot be used when a foreign key is not allowed NULL values
+  - `SET DEFAULT` is not supported in certain MySQL configurations
+- ```mysql
+  CREATE TABLE Employee (
+      ID        SMALLINT UNSIGNED,
+      Name      VARCHAR(20),
+      BirthDate DATE,
+      Salary    INTEGER,
+      PRIMARY KEY (ID)
+  );
+  
+  CREATE TABLE Department (
+      Code      TINYINT UNSIGNED,
+      Name      VARCHAR(20),
+      ManagerID SMALLINT UNSIGNED,
+      PRIMARY KEY (Code),
+      FOREIGN KEY (ManagerID) REFERENCES Employee(ID)
+          ON DELETE CASCADE
+          ON UPDATE SET NULL
+  );
+  ```
