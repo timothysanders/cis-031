@@ -107,7 +107,7 @@
 - Several SQL statements are used by database administrators/designers/users to manage the databases on an instance
   - `CREATE DATABASE DatabaseName` creates a new database
   - `DROP DATABASE DatabaseName` deletes a database, including all tables in the database
-- ```sql
+- ```mysql
   CREATE DATABASE petStore;
   CREATE DATABASE bikeStore;
   DROP DATABASE petStore;
@@ -151,7 +151,7 @@
 - The `DROP TABLE` statement deletes a table, along with all the tables rows, from a database
   - This statement will fail if the named table does not exist
   - Can avoid these failures by combining with `IF EXISTS`
-- ```sql
+- ```mysql
   CREATE TABLE [IF NOT EXISTS] TableName (
     Column1 DATA_TYPE,
     Column2 DATA_TYPE,
@@ -224,7 +224,7 @@
 - Columns may contain NULL values by default, but in some cases, a business rule may require that a column should never contain NULL (such as a name of an employee for a business)
 - The **NOT NULL** constraint prevents a column from having a NULL value, any statement trying to insert a NULL value will be rejected
 - Example syntax of the `NOT NULL` constraint
-- ```sql
+- ```mysql
   CREATE TABLE Employee (
       ID        SMALLINT UNSIGNED,
       Name      VARCHAR(60) NOT NULL,
@@ -239,13 +239,13 @@
 ### IS NULL operator
 - Because the comparison operators return NULL when either operand is NULL, comparison operators cannot be used to select NULL values. For these scenarios, you need to use `IS NULL` and `IS NOT NULL` operators to retrieve those rows/values
 - Example syntax of the `IS NULL` operator
-- ```sql
+- ```mysql
   SELECT *
   FROM Country
   WHERE IndepYear IS NULL;
   ```
 - Example syntax of the `IS NOT NULL` operator
-- ```sql
+- ```mysql
   SELECT *
   FROM Country
   WHERE Population IS NOT NULL;
@@ -266,3 +266,58 @@
 - MySQL does not have a specific data type for logical values, but rather represents FALSE as 0 and TRUE as 1 in query results
 - Be careful about generalizing the way one database system treats NULL values to others, they are not all the same
 
+## 2.9: Primary keys
+### Primary keys
+- A **primary key** is a column or group of columns used to identify a row. Primary keys must be unique and not NULL
+- In a table diagram, a bullet (●) is often used to note the primary key column(s), and the primary keys are usually the left-most columns in a table (though this is not a requirement)
+
+### Composite primary keys
+- Sometimes, you will need multiple columns to uniquely identify a row. A **simple primary key** is a single column, while a **composite primary key** is multiple columns
+- Composite primary keys must be
+  - *Unique*: no groups of values may repeat in multiple rows
+  - *Not NULL*: no column of a composite primary key may contain a NULL value
+  - *Minimal*: all primary key columns are necessary for uniqueness
+- Similar to above, a bullet (●) is usually used to denote each column of a composite primary key
+
+### PRIMARY KEY constraint
+- The **`PRIMARY KEY`** constraint in a `CREATE TABLE` statement names the table's primary key
+- In a `CREATE TABLE` statement, the primary key column definition usually appears first, but this is not required
+- Simple primary key syntax example
+- ```mysql
+  CREATE TABLE Employee (
+      ID        SMALLINT UNSIGNED,
+      Name      VARCHAR(60),
+      Salary    DECIMAL(7, 2),
+      PRIMARY KEY (ID)
+  );
+  ```
+- Composite primary key syntax example
+- ```mysql
+  CREATE TABLE Family (
+      ID            SMALLINT UNSIGNED,
+      Number        SMALLINT UNSIGNED,
+      Relationship  VARCHAR(20),
+      Name          VARCHAR(60),
+      PRIMARY KEY(ID, Number)
+  );
+  ```
+
+### Auto-increment columns
+- An **auto-increment column** is an integer column that is automatically assigned an incrementing value when a new row is inserted, specified with the **`AUTO_INCREMENT`** keyword following the column's data type
+- In MySQL, an auto-increment column must
+  - appear only once in each table
+  - not have a default value
+  - have an integer data type
+  - have an index
+- MySQL automatically creates an index on primary key columns, for other columns, the indexes must be created manually using `CREATE INDEX`
+- Auto-increment can often be applied to primary key columns
+- ```mysql
+  CREATE TABLE Employee (
+      ID        SMALLINT UNSIGNED AUTO_INCREMENT,
+      Name      VARCHAR(60),
+      BirthDate DATE,
+      Salary    DECIMAL(7,2),
+      PRIMARY KEY(ID)
+  );
+  ```
+- MySQL allows you to insert specific values into auto-increment columns (and automatically replaces NULL and 0 with the next value in the sequence), but this can be misleading and should be avoided
