@@ -260,3 +260,30 @@
   | 5C   | Implement weak entities as tables.                            |
   | 5D   | Implement supertype and subtype entities as tables.           |
 
+## 4.8: Implementing relationships
+### Implementing many-one relationships
+- The "implement entities" step converts identifying relationships into foreign keys, the "implement relationships" step converts all other relationships into foreign keys or tables
+- A many-one or one-many relationship becomes a foreign key
+  - The foreign key goes in the table on the "many" side and refers to the table on the "one" side
+  - If the entity on the "one" side is required, the foreign key column is also required
+- The foreign key name is the name of the referenced primary key, with an optional prefix that is usually derived from the relationship name and clarifies the meaning of the foreign key
+
+### Implementing one-one relationships
+- A one-one relationship becomes a foreign key and the foreign key can go in the table on either side of the relationship (but usually is placed in the table with fewer rows, to minimize NULL values)
+  - Foreign key refers to the table on the opposite side of the relationship
+  - The foreign key column is unique
+  - If the entity on the opposite side of the relationship is required, the foreign key column is also required
+- The foreign key name is the name of the referenced primary key, with an optional prefix that is usually derived from the relationship name and clarifies the meaning of the foreign key
+
+### Implementing many-many relationships
+- A many-many relationship becomes a new weak table
+  - The new table contains two foreign keys, referring to the primary keys of the related tables
+  - The primary key of the new table is the composite of the two foreign keys
+  - The new table is identified by the related tables, so primary key cascade and foreign key restrict rules are usually specified
+- Occasionally, an attribute describes a many-many relationship and becomes a column of the weak table
+- The new table name usually consists of the related table names, with an optional qualifier (usually derived from the relationship name)
+- | Step | Activities                                                                     |
+  |------|--------------------------------------------------------------------------------|
+  | 6A   | Implement many-one relationships as a foreign key on the 'many' side.          |
+  | 6B   | Implement one-one relationships as a foreign key in the table with fewer rows. |
+  | 6C   | Implement many-many relationships as new weak tables.                          |
