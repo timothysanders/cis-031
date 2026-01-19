@@ -139,3 +139,26 @@
   | 2C   | Identify unique attributes.                                      |
   | 2D   | Document cardinality in glossary and, optionally, on ER diagram. |
 
+## 4.4: Strong and weak entities
+### Strong entities
+- An **identifying attribute** is unique, singular, and required. These correspond one-to-one, or **identify**, entity instances
+- A **strong entity** has one or more identifying attributes. When a strong entity is implemented as a table, of the identifying attributes may become the primary key
+
+### Weak entities
+- A **weak entity** does not have an identifying attribute, but instead usually has a relationship (called an **identifying relationship**), with another entity, called an **identifying entity**. This identifying entity must be singular and required in an identifying relationship
+- In an ER diagram, an identifying relationship has a diamond next to the identifying entity. Since an identifying entity is always singular and required, the diamond replaces the entity's cardinality symbols
+- For weak entities, identifying relationships replace identifying attributes
+
+### Identifying entities
+- A weak entity is usually identified by a strong entity, but a weak entity can be identified by another weak entity or by several entities
+- When a weak entity is identified by a weak entity or multiple entities, the identifying relationship may be complex. In these cases, the identifying attribute depends on business rules and may not be apparent in the ER diagram
+
+### Database Design
+- During the conceptual design phase, the designer distinguishes strong and weak entities. For each weak entity, the identifying relationship is noted and should be documented in the glossary and ER diagram
+- Conceptual design steps are not always linear in practices, but are often iterative
+- | Step | Activity                                                                         |
+  |------|----------------------------------------------------------------------------------|
+  | 3A   | Identify strong and weak entities.                                               |
+  | 3B   | Determine the identifying relationship(s) for each weak entity.                  |
+  | 3C   | Document weak entities and identifying relationships in glossary and ER diagram. |
+
