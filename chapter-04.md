@@ -218,3 +218,45 @@
   - **IDEF1X** stands for Information DEFinition version 1X. IDEF1X became popular, in part, due to early adoption by the US DoD
   - **Chen notation** appeared in an early ER modeling paper by Peter Chen. It is not standardized, but often appears in literature and tools
 - These differences in conventions are usually stylistic versus substantial and the choice of convention does not usually affect the resulting database design
+
+## 4.7: Implementing entities
+### Selecting primary keys
+- In the first step of logical design, entities become tables and attributes become columns. As these are specified, primary keys are selected. The primary keys must be unique and required (not NULL)
+- Primary keys should be
+  - *Stable*: Primary key values should not change. When a primary key value changes, statements specifying the old value must also change and the new primary key must cascade to matching foreign keys
+  - *Simple*: Primary keys should be easy to type and store, small values are generally easier to type and store in an SQL `WHERE` clause
+  - *Meaningless*: Primary keys should not contain descriptive information. Descriptive information can change, so primary keys containing this information are unstable
+
+### Implementing strong entities
+- A strong entity becomes a **strong table**. The primary key must be unique and required, and should be stable, simple, and meaningless
+- Simple primary keys are best for strong tables, but a composite primary key may be used if a simple primary key is not available. An **artificial key** is a simple primary key created by the database designer, usually an integer that is generated automatically by the database when new rows are inserted. These keys are stable, simple, and meaningless
+
+### Implementing weak identities
+- A weak entity becomes a **weak table**, which has a foreign key that references the identifying table and implements the identifying relationship
+- The primary key depends on the cardinality of the identifying relationship
+  - A weak entity is often plural and the primary key is the composite of the foreign key and another column
+  - Occasionally, the weak entity is singular, so the primary key is the foreign key only
+- The foreign key usually has the following referential integrity actions
+  - Cascade on primary key update and delete
+  - Restrict on foreign key insert and update
+- In table diagrams, an arrow indicates a foreign key, starting at the foreign key and points to the table containing the referenced primary key
+- If a weak entity has several identifying relationships, the primary key includes one foreign key for each identifying relationship. The primary key can include an additional column if needed for uniqueness
+
+### Implementing supertype and subtype entities
+- A supertype entity becomes a **supertype table**. A supertype entity with an identifying attribute is implemented like a strong entity, which a supertype entity that has an identifying relationship, rather than an identifying attribute, is implemented like a weak entity
+- A subtype entity becomes a **subtype table**, where the primary key is identical to the supertype primary key and the primary key is also a foreign key that references the supertype primary key
+- The foreign key usually has the following referential integrity actions
+  - Cascade on primary key update and delete
+  - Restrict on foreign key insert and update
+- Foreign key implements the IsA relationship between the subtype and supertype entities
+
+### Database design
+- The implement entities step creates an initial table design and specifies primary keys. If no suitable primary keys are available, an artificial primary key is created. This design continues to be augmented in subsequent steps
+- Some implementation decisions are affected by the database system. For example, if it is simple to create artificial primary keys, a designer may choose to use these more often
+- | Step | Activity                                                      |
+  |------|---------------------------------------------------------------|
+  | 5A   | Implement strong entities as tables.                          |
+  | 5B   | Create an artificial key when no suitable primary key exists. |
+  | 5C   | Implement weak entities as tables.                            |
+  | 5D   | Implement supertype and subtype entities as tables.           |
+
