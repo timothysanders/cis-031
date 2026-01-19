@@ -92,3 +92,50 @@
   | 1B   | Draw ER diagram.                                                |
   | 1C   | List standard attribute types in glossary.                      |
   | 1D   | Document names, synonyms, and descriptions in glossary.         |
+
+## 4.3: Cardinality
+### Relationship maximum
+- In ER modeling, **cardinality** refers to maxima and minima of relationships and attributes
+- **Relationship maximum** is the greatest number of instances that one entity can relate to a single instance of another entity, there is a maxima for each "direction" of the related entities
+  - Maxima are usually specified as one or many
+  - Related entity is **singular** when the maximum is one and **plural** when the maximum is many
+- On an ER diagram, maximum of one is shown as a short bar across the relationship line, while a maximum of many is shown as three converging short lines (**crow's foot** notation)
+- Occasionally a plural entity has a fixed numeric maximum, these should be documented in the glossary
+
+### Relationship minimum
+- **Relationship minimum** is the least number of instances of one entity that can relate to a single instance of another entity, each entity in the relationship has a minima.
+  - Minima are usually specified as zero or one
+  - A related entity is **optional** when the minimum is zero and **required** when the minimum is one
+- On an ER diagram, minimum of one is shown as a short bar across the relationship line, while a minimum of zero is shown as a circle
+- Maxima symbols always appear next to the entity and the minima symbols appear farther from the entity
+- An entity may occasionally have a minima of greater than one, this should be documented in the glossary
+
+### Attribute maximum and minimum
+- **Attribute maximum** is the greatest number of attribute values that can describe each entity instance. This can be specified as one (singular) or many (plural)
+- **Attribute minimum** is the least number of attribute values that can describe each entity instance. This can be specified as zero (optional) or one (required)
+- In an ER diagram, an attribute is presumed to be singular and optional, unless noted otherwise
+  - "P" following the attribute indicates it is plural
+  - "R" following the attribute indicates it is required
+- Attributes may have fixed minimum/maximum numbers other than zero, one, or many, these should be documented in the glossary
+
+### Unique attributes
+- Each value of a **unique attribute** describes at most one entity instance (ex. VIN for a single Vehicle entity)
+- Unique is not the same as singular
+  - A unique attribute has at most one entity instance for each attribute value
+  - A singular attribute has at most one attribute value for each entity instance
+- In ER diagrams, attributes are not presumed to be unique, unless specified with a "U". Unique composite attributes are grouped with a brace before the "U" symbol
+
+> ### Entity-Has-Attribute relationship
+> Entities have an implicit relationship with their attributes. Attribute minimum/maximum are the cardinality of Attribute in the relationship
+> An attribute is unique when Entity is singular in this relationship
+
+### Database design
+- Relationship and attribute cardinality depends on business rules, which the designer looks for in interviews and document reviews. These are then converted to specifications, which are documented in the ER diagram and glossary
+- Cardinality may not always appear on an ER diagram, which are usually drawn with software tools that can show/hide cardinality
+- | Step | Activity                                                         |
+  |------|------------------------------------------------------------------|
+  | 2A   | Determine relationship maxima and minima.                        |
+  | 2B   | Determine attribute maxima and minima.                           |
+  | 2C   | Identify unique attributes.                                      |
+  | 2D   | Document cardinality in glossary and, optionally, on ER diagram. |
+
