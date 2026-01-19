@@ -197,3 +197,24 @@
   2. Determine cardinality
   3. Distinguish strong and weak entities
   4. Create supertype and subtype entities
+
+## 4.6: Alternative modeling conventions
+### Diagram conventions
+- ER diagram conventions may vary widely, for example they may
+  - Depict relationship names in diamonds
+  - Depict weak entities in double rectangles
+  - Depict each attribute in a separate ellipse, connected to the entity with a line
+  - Depict subtype entities with IsA relationships rather than inside of supertype entities
+  - Use color, dashed lines, or double lines to convey additional information
+- Variation in cardinality symbols are also common
+
+### Model conventions
+- ER modeling concepts also vary, where some ER models
+  - Allow relationships between three or more entities
+  - Decompose a complex model into a group of related entities, called a **subject area**
+  - Refer to strong entities as **independent** and weak entities as **dependent**
+- Some modeling conventions are standardized and widely used, with some examples
+  - **Unified Modeling Language** (**UML**) is commonly used for software development, but also includes ER conventions
+  - **IDEF1X** stands for Information DEFinition version 1X. IDEF1X became popular, in part, due to early adoption by the US DoD
+  - **Chen notation** appeared in an early ER modeling paper by Peter Chen. It is not standardized, but often appears in literature and tools
+- These differences in conventions are usually stylistic versus substantial and the choice of convention does not usually affect the resulting database design
