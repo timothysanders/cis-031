@@ -56,3 +56,39 @@
     | 7    | Implement attributes    |
     | 8    | Apply normal form       |
 
+## 4.2: Discovery
+### Discovery
+- Database requirements are determined by interviewing database users and managers, who are usually familiar with requirements from an old database or a manual process.
+- Entities, relationships, and attributes will often surface as nouns and verbs in an interview
+  - Entities are usually nouns, but not all nouns are entities
+  - Relationships are usually verbs; designers should ignore statements that are not about entities, not relevant to the database, or redundant. Look for relationships that are not explicitly stated
+  - Attributes are usually nouns that denote specific data, like names, dates, quantities, and monetary values
+- Written documents are also a good source of data requirements (for example, old user manuals)
+
+### Names
+- Entity names are usually a singular noun ("Employee" vs "Employees")
+- Relationship names have the form `Entity-Verb-Entity` and the verb should be active, rather than passive ("Manages" vs "IsManagedBy"). The same verb can sometimes be used to relate different entity pairs
+- Attribute names have the form `EntityQualifierType` (ex. EmployeeFirstName)
+  - `Entity` is the name of the entity that the attribute describes. If the entity is obvious, `QualifierType` is sufficient and the entity name can be omitted
+  - `Qualifier` describes the meaning of the attribute (ex. first, last, alternate), though sometimes the qualifier is unnecessary/omitted
+  - `Type` is chosen from a list of standard attribute types such as Name, Number, and Count. Note that these are not identical to SQL data types
+- Standard attribute types should be documented in the glossary and applied uniformly across all attribute names
+- |              | Formal name              | Informal name |
+  |--------------|--------------------------|---------------|
+  | Entity       | Vehicle                  | Vehicle       |
+  | Relationship | Vehicle-BelongsTo-Person | BelongsTo     |
+  | Attribute    | VehicleLicenseNumber     | LicenseNumber |
+
+### Synonyms and descriptions
+- Entity, relationship, and attribute names will often have synonyms, which are commonly used in informal communications. One official name should be selected for each entity/relationship/attribute, with other names documented in the glossary as synonyms
+- Glossary should also contain complete descriptions of entities/relationships/attributes, with the meaning of each stated in complete sentences. It should also contain examples and counter examples to illustrate usage
+
+### Database design
+- First step of conceptual design is discovery of entities, relationships, and attributes in interviews and document review. The designer creates an ER diagram, determines standard attribute types, and documents names/synonyms/descriptions in the glossary
+- Database designers commonly move back and forth between steps and additional entities/relationships/attributes are discovered. The ER diagram/glossary are usually developed in parallel
+- | Step | Activity                                                        |
+  |------|-----------------------------------------------------------------|
+  | 1A   | Identify entities, relationships, and attributes in interviews. |
+  | 1B   | Draw ER diagram.                                                |
+  | 1C   | List standard attribute types in glossary.                      |
+  | 1D   | Document names, synonyms, and descriptions in glossary.         |
