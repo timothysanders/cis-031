@@ -162,3 +162,38 @@
   | 3B   | Determine the identifying relationship(s) for each weak entity.                  |
   | 3C   | Document weak entities and identifying relationships in glossary and ER diagram. |
 
+## 4.5: Supertype and subtype entities
+### Supertype and subtype entities
+- Entity types are sets of entity instances. A **subtype entity** is a subset of another entity type, which is called the **supertype entity**
+  - For example, Managers are a subset of employee, Manager is a subtype entity of the Employee supertype entity
+- A supertype entity usually has several subtypes and attributes of the supertype apply to all subtypes (similar to inheritance in OOP), but attributes of a subtype do not apply to other subtypes or the supertype
+- Subtypes can be used to highlight subsets of data with different attributes and relationships than the supertype, clarifying semantics/behavior
+- Optional supertype attributes can become required subtype attributes
+- An attribute repeated in several subtypes becomes a single supertype attribute
+
+### Similar entities and optional attributes
+- Supertype and subtype entities are often created from similar entities and optional attributes
+- **Similar entities** are entities with many common attributes and relationships, and can become subtypes of a new supertype entity. Common attributes and relationships move to the new supertype entity. Non-shared attributes and relationships remain with the subtype entity
+- If an entity has many optional attributes, that suggests a new supertype and subtype entities. The entity becomes a new supertype entity and retains all required attributes, while the optional attributes become required attributes of new subtype entities
+- Creating a new supertype for similar entities is not automatic or objective decision, but must be judged based on business requirements
+
+### Partitions
+- A **partition** of a supertype entity is a group of mutually exclusive subtype entities. A supertype may have several partitions, and subtype entities within a partition are disjoint and do not share instances. Subtype entities in different partitions overlap and do share instances
+- Each partition corresponds to an optional **partition attribute** of the supertype entity. The partition attribute indicates which subtype entity is associated with each supertype instance
+
+### IsA relationship
+- A supertype entity identifies its subtype entities, this identifying relationship is called an **IsA relationship**. Every subtype has an IsA relationship to its supertype, so the relationship is assumed and may be omitted from the ER diagram
+
+### Database design
+- After entities, relationships, attributes, cardinality, and strong/weak entities are determined, database designers look for supertype and subtype entities. Similar entities and optional attributes suggest new supertype/subtype entities. Mutually exclusive subtype entities are grouped into partitions, with each partition having a partition attribute added to the supertype entity
+- | Step | Activity                                                                              |
+  |------|---------------------------------------------------------------------------------------|
+  | 4A   | Identify supertype and subtype entities.                                              |
+  | 4B   | Replace similar entities and optional attributes with supertype and subtype entities. |
+  | 4C   | Identify partitions and partition attributes.                                         |
+  | 4D   | Document supertypes, subtypes, and partitions in glossary and ER diagram.             |
+- This step is the last of four conceptual design steps, with logical design following
+  1. Discover entities, relationships, and attributes
+  2. Determine cardinality
+  3. Distinguish strong and weak entities
+  4. Create supertype and subtype entities
