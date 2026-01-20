@@ -379,3 +379,27 @@
 > When the columns of A are a subset of the columns of B, A always depends on B. These dependencies are called **trivial**
 > Technically, trivial dependencies must be excluded in definitions of normal form: A table is in Boyce-Codd normal form if, for all **non-trivial** dependencies B $\to$ A, B is unique
 
+## 4.12: Applying normal form
+### Normalization
+- Occasionally when implementing entities, relationships, and attributes generates tables that contain redundancies, these can be eliminated with normalization, which is the last step of logical design. **Normalization** eliminates redundancy by decomposing a table into two or more tables in higher normal form
+- Database designers will usually utilize Boyce-Codd normal form. In **Boyce-Codd normal form**, if column A depends on Column B, then B must be unique. Normalizing a table to Boyce-Codd normal form involves three steps
+  1. *List all unique columns*: These columns may be simple or composite. Composite columns must be minimal, meaning any columns not necessary for uniqueness are removed
+  2. *Identify dependencies on non-unique columns*: Non-unique columns are either *external* to all unique columns or *contained within* a composite unique column
+  3. *Eliminate dependencies on non-unique columns*: If column A depends on a non-unique column B, A is removed from the original table. A new table is created containing A and B, B is the primary key of the new table and a foreign key in the original table
+- Since data relating columns A and B is recorded in a new table, no information is lost when A is removed from the original table
+> ### Terminology
+> In E.F. Codd's original paper on the relational model, **normalization** meant achieving first normal form. Over time, normalization has come to mean achieving higher normal forms
+
+### Denormalization
+- Boyce-Codd normal form is ideal for tables with frequent inserts, updates, and deletes. However, for databases where the primary use case is reporting, changes are infrequent and redundancy is acceptable (processing is faster and queries are simpler). Because of this, reporting databases may contain tables are not in third normal form by design
+- **Denormalization** means intentionally introducing redundancy by merging tables to eliminate join queries to improve query performance. Denormalization results in first and second normal form tables and should be applied selectively and cautiously.
+- ![Denormalization example](images/figure-4.12.1.png)
+
+### Database design
+- As tables/keys are specified, database designers review each table for Boyce-Codd normal form, identifying dependencies and unique columns. If any dependencies are not on unique columns, the table is decomposed into smaller tables in Boyce-Codd normal form
+- Tables with infrequent inserts/updates/deletes may be denormalized to simplify and accelerate join queries
+- | Step | Activity                                              |
+  |------|-------------------------------------------------------|
+  | 8A   | Identify dependencies on non-unique columns.          |
+  | 8B   | Eliminate redundancy by decomposing tables.           |
+  | 8C   | Consider denormalizing tables in reporting databases. |
