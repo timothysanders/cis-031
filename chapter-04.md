@@ -360,3 +360,22 @@
 - Redundancy can occur in a second normal form table when a non-key column depends on another non-key column. Informally, a table is in **third normal form** when all non-key columns depend on the entire key and nothing else
 - A table in third normal form is also in first and second normal forms, by definition
 
+## 4.11: Boyce-Codd normal form
+### Redundancy and dependence
+- *Column A depends on column B* means each B value is related to at most one A value. Dependence of one column on another is called *functional dependence*. Redundancy occurs when a column depends on another column that is not unique
+- In a Boyce-Codd normal form table, all dependencies are on unique columns, because dependence on a unique column never creates redundancy. This eliminates all redundancy arising from functional dependence
+
+### Third normal form
+- A table is in third normal form when all non-key columns depend on the whole key and nothing else. This is accurate when the primary key is the only unique column, but the formal definition accounts for tables with several unique columns
+- A **candidate key** is a simple or composite column that is unique and minimal. **Minimal** meaning all columns in the key are necessary for uniqueness. A table can have several candidate keys and the database designer will designate one of these candidate keys as the primary key
+- A **non-key** column is a column that is not contained in a candidate key
+- A table is in **third normal form** if, whenever a non-key column A depends on column B, then B is unique. Columns A and B may be simple or composite. Although B is unique, B is not necessarily minimal and therefore is not necessarily a candidate key
+
+### Boyce-Codd normal form
+- The definition of third normal form applies to non-key columns only, which allows for occasional redundancy. Boyce-Codd normal form applies to all columns and eliminates this redundancy
+- A table is in **Boyce-Codd normal form** if, whenever column A depends on column B, then B is unique. Columns A and B may be simple or composite. This is identical to the definition of third normal form, but with the term "non-key" removed
+- Boyce-Codd normal form is considered the gold standard of table design
+> ### Trivial dependencies
+> When the columns of A are a subset of the columns of B, A always depends on B. These dependencies are called **trivial**
+> Technically, trivial dependencies must be excluded in definitions of normal form: A table is in Boyce-Codd normal form if, for all **non-trivial** dependencies B $\to$ A, B is unique
+
