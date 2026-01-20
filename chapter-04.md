@@ -323,3 +323,40 @@
   | 7C   | Specify column data types corresponding to attribute types.                       |
   | 7D   | Enforce relationship and attribute cardinality with UNIQUE and NOT NULL keywords. |
 
+## 4.10: First, second, and third normal form
+### Functional dependence
+- Column A **depends on** column B, meaning each B value is related to at most one A value. This relationship, "A depends on B" is denoted "B $\to$ A"
+- Dependence of one column on another is called **functional dependence** and reflects business rules
+- Functional dependence cannot be inferred from values in a table at a single point in time, as future updates may change current assumptions or patterns
+- Functional dependence is not the only type of dependence, **multivalued dependence** and **join dependence** entail dependencies between three or more columns (but these are uncommon)
+
+### Normal forms
+- **Redundancy** is the repetition of related values in a table, this can cause database management problems. For example, if a value is updated, redundancies may mean it needs to be updated in many places, which makes queries slow and complex. Additionally, if all copies are not updated uniformly, they may become inconsistent
+- **Normal forms** are rules for designing tables with less redundancy and are numbered first through fifth. An additional form, Boyce-Codd is an improved version of third normal form
+- ![Normal form hierarchy](images/figure-4.10.1.png)
+- Redundancy occurs when a dependence is on a column that is not unique. Boyce-Codd normal form eliminates all dependencies on non-unique columns and, in practice, is the most important normal form
+- Fourth and fifth normal forms eliminate multi-valued and join dependencies, respectively. Since these multi-valued and join dependencies are complex and uncommon, these fourth/fifth normal forms are primarily theoretical
+
+### First normal form
+- Every cell of a table contains exactly one value. A table is in **first normal form** when, in addition to those values, the table has a primary key
+  - *In a first normal form table, every non-key column depends on the primary key.* Each primary key value appears in exactly one row, and each non-key cell contains exactly one value. So each primary key value is related to exactly one non-key value.
+  - *A first normal form table has no duplicate rows.* Every row contains a different primary key value and therefore every row is different.
+- In practice, databases are allowed to violate this form with duplicate rows and no primary keys
+
+> ### Alternative definitions of first normal form
+> First normal form is commonly defined several ways
+> - The table has a primary key
+> - Every non-key column depends on the primary key
+> - The table cannot have duplicate rows
+> - Every cell contains exactly one value
+> 
+> The first three definitions are equivalent, but the last is different. The last definition is true of any relational table, and allows for duplicate rows and no primary key
+
+### Second normal form
+- A table is in **second normal form** when all non-key columns depend on the whole primary key, which means that a non-key column cannot depend on part of a composite primary key. A table with a simple primary key is automatically in second normal form
+- A table in second normal form is also in first normal form, by definition
+
+### Third normal form
+- Redundancy can occur in a second normal form table when a non-key column depends on another non-key column. Informally, a table is in **third normal form** when all non-key columns depend on the entire key and nothing else
+- A table in third normal form is also in first and second normal forms, by definition
+
