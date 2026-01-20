@@ -287,3 +287,39 @@
   | 6A   | Implement many-one relationships as a foreign key on the 'many' side.          |
   | 6B   | Implement one-one relationships as a foreign key in the table with fewer rows. |
   | 6C   | Implement many-many relationships as new weak tables.                          |
+
+## 4.9: Implementing attributes
+### Implementing plural attributes
+- In the "implementing entities" step, entities become tables and attributes become columns. Singular entities are in the initial table, but plural attributes need to be moved to a new weak table
+  - New table contains the plural attribute and a foreign key referencing the initial table
+  - Primary key of the new table is the composite of the plural attribute and the foreign key
+  - New table is identified by the initial table, so primary key cascade and foreign key restrict rules are specified
+  - New table name consists of the initial table name followed by the attribute name
+- If the plural attribute has a small, fixed maximum, the plural attribute could be implemented as multiple columns in the initial table, but this is usually not the best solution
+
+### Implementing attribute types
+- During conceptual design, a list of standard attribute types is established. During logical design, an SQL data type is defined for each attribute type, which is then documented in the glossary/data dictionary
+- Each attribute name includes the standard attribute type as a suffix, the attribute type determines the data type of the corresponding column
+
+### Implementing attribute cardinality
+- Since plural attributes are implemented as singular columns, all columns are singular, with required or unique attributes becoming required or unique columns. Like attributes, columns are presumed optional and not unique unless followed by R or U in the table diagram
+- Relationship cardinality determines constraints on foreign key columns
+  - If the table *referenced by* the foreign key implements a *required* entity, the column is required
+  - If the table *containing* the foreign key implements a *singular* entity, the column is unique
+- Table diagrams are implemented as `CREATE TABLE` statements
+  - `NOT NULL` is specified for required columns
+  - `UNIQUE` is specified for unique columns
+  - `PRIMARY KEY` is specified for primary key columns
+- Composite unique columns and composite primary keys can be specified in a column definition clause, they require an additional clause in the `CREATE TABLE` statement
+
+### Database design
+- The "implementing attributes" step specifies columns, column constraints, and data types. Plural attributes become new weak tables. Unique and required attributes are implemented with `UNIQUE`, `NOT NULL`, and `PRIMARY KEY` keywords
+- After the "implementing attributes" step, the database is completely specified as `CREATE TABLE` statements.
+- A final step, "review tables for third normal form" ensures the tables do not contain redundant data and fine-tunes the design as necessary
+- | Step | Activities                                                                        |
+  |------|-----------------------------------------------------------------------------------|
+  | 7A   | Implement plural attributes as new weak tables.                                   |
+  | 7B   | Specify cascade and restrict rules on new foreign keys in weak tables.            |
+  | 7C   | Specify column data types corresponding to attribute types.                       |
+  | 7D   | Enforce relationship and attribute cardinality with UNIQUE and NOT NULL keywords. |
+
