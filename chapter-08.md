@@ -41,3 +41,39 @@
 - A **user-defined type** is created by the database designer or administrator with the `CREATE TYPE` statement. The **`CREATE TYPE`** statement specifies the type name and a **base type** that defines the implementation. This base type can be system defined or user defined. The new user defined type is implemented as the specified type, but they are different types and cannot be directly compared
 - User-defined types can appear after column names in `CREATE TABLE` statements, just like system-defined types, and can be simple or complex
 - `CREATE TYPE` is defined in the SQL standard and is widely supported (though not by MySQL)
+
+## 8.2: Collection types
+### Collection types
+- A collection type is defined in terms of a base type and each collection type value contains zero, one, or many based type values
+- Base type values are called **elements**
+- Collections include four complex types
+  - Elements of a **set** value cannot be repeated and are not ordered
+  - Elements of a **multiset** value can be repeated and are not ordered
+  - Elements of a **list** value can be repeated and are ordered
+  - An **array** is an indexed list, with each element accessible with a numeric index
+- The SQL standard includes multiset and array types but not set and list types. Most databases support some for of collection type, but implementations vary greatly
+
+### Set type
+- The MySQL `SET` type is similar to the `ENUM` type, where both have a base type consisting of character strings. Each `ENUM` value must contain exactly one element, while each `SET` value may contain zero, one, or many elements
+- A `SET` type is defined with the `SET` keyword followed by the base type strings, `SET('apple', 'banana', 'orange')`. A `SET` value is specified as a string with commas between each element and no blank spaces.
+- A `SET` value can contain no elements, and a value with no elements represents the empty set, which is not the same as a NULL value
+- Internally, each `SET` value is a series of bits, each corresponding to a specific element. When a bit is one, the corresponding element is included, when the bit is zero, the corresponding element is not included. A base type can have at most 64 elements, so each `SET` value requires at most 64 bits, or eight bytes
+- `SET` values can be compared with string functions
+- ```mysql
+  CREATE TABLE Employee (
+      ID INTEGER,
+      Name VARCHAR(20),
+      Language SET('English', 'French', 'Spanish', 'Mandarin', 'Japanese'),
+      PRIMARY KEY (ID)
+  );
+  INSERT INTO Employee (ID, Name, Language)
+  VALUES (2538, 'Lisa Ellison', 'English,Spanish'),
+         (6381, 'Maria Rodriguez', 'English,Spanish,Japanese'),
+         (7920, 'Jiho Chen', 'Mandarin');
+  ```
+
+### Array type
+- PostgreSQL specifies array types by appending pairs of brackets to any base type, with a number in the brackets indicating the array size (ex. `INTEGER[4]`). Optionally, you can use the `ARRAY` keyword (ex. `INTEGER ARRAY[4]`). If no number appears in the brackets, the array size is variable (up to the system maximum)
+- An array value is specified as a string with comma-separated values within braces (ex. `{2, 5, 11, 6}`) and array elements are accessed via an index (ex. `WHERE MonthlyHours[2] > 100`)
+- A multi-dimensional array type can be specified with multiple bracket pairs (ex. `INTEGER[4][9]`)
+- In Oracle, an array is a user defined type
