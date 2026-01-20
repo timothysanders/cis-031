@@ -266,6 +266,47 @@
 - MySQL does not have a specific data type for logical values, but rather represents FALSE as 0 and TRUE as 1 in query results
 - Be careful about generalizing the way one database system treats NULL values to others, they are not all the same
 
+## 2.8: Inserting, updating, and deleting rows
+### `INSERT` statement
+- The `INSERT` statement adds rows to a table and has two clauses
+  - The `INSERT INTO` clause names the table and columns where data is to be added, with `INTO` being optional
+  - The `VALUES` clause specifies the column values to be added
+- The `VALUES` clause may list any number of rows in parentheses to insert multiple rows
+- ```mysql
+  INSERT INTO TableName (Column1, Column2, ...)
+  VALUES (Value1, Value2, ...);
+  ```
+### `DEFAULT` values
+- Columns may be omitted from an `INSERT` statement, if so, they are assigned a NULL value. If NOT NULL constraint was specified, the insert is rejected
+- Alternatively, a default value may be specified for a column with the optional `DEFAULT` keyword and value, following the column name and data type in a `CREATE TABLE` statement. When omitted from the `INSERT` statement, the default value is assigned
+- ```mysql
+  CREATE TABLE Department (
+      Code      SMALLINT UNSIGNED DEFAULT 1000,
+      Name      VARCHAR(20),
+      ManagerID SMALLINT
+  );
+  ```
+
+### `UPDATE` statement
+- The `UPDATE` statement modifies existing rows in a table and uses the `SET` clause to specify the new column values. An optional `WHERE` clause specifies which rows are updated. Omitting this `WHERE` clause updates all rows in the table
+- ```mysql
+  UPDATE TableName
+  SET Column1 = Value1, Column2 = Value2, ...
+  WHERE condition;
+  ```
+
+### `DELETE` statement
+- The `DELETE` statement deletes existing rows in a table. The `FROM` keyword is followed by the table name whose rows are to be deleted. An optional `WHERE` clause specifies which rows should be deleted, if this is omitted, all rows in the table are deleted
+- ```mysql
+  DELETE FROM TableName
+  WHERE condition;
+  ```
+> ### `TRUNCATE`
+> The `TRUNCATE` statement deletes all rows from a table. This is nearly identical to a `DELETE` statement with no `WHERE` clause except for minor differences that depend on the database system
+> ```mysql
+> TRUNCATE TABLE TableName;
+> ```
+
 ## 2.9: Primary keys
 ### Primary keys
 - A **primary key** is a column or group of columns used to identify a row. Primary keys must be unique and not NULL
