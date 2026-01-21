@@ -77,3 +77,49 @@
 - An array value is specified as a string with comma-separated values within braces (ex. `{2, 5, 11, 6}`) and array elements are accessed via an index (ex. `WHERE MonthlyHours[2] > 100`)
 - A multi-dimensional array type can be specified with multiple bracket pairs (ex. `INTEGER[4][9]`)
 - In Oracle, an array is a user defined type
+
+## 8.3: Document Types
+### Document Types
+- **Structured data** is stored as a fixed set of named data elements, organized in groups, and a type is explicitly declared for each element. Each group will have the same number of elements with the same names and types.
+- **Semistructured data** is similar to structured data, but each group can have a different number of elements with different names, and the types are not explicitly declared. Elements are stored as characters and the type is inferred from the data
+- **Unstructured data** is stored as elements embedded in a continuous string of characters or bits, and no element names or types are declared
+- Semistructured data is stored in a **document** as text in a flexible format, such as XML or JSON. Most relational databases support XML or JSON document types. Each value of a document type is a complete XML or JSON document and may have many elements
+
+### XML format
+- XML stands for eXtensible Markup Language and uses tags instead of columns. A **tag** is a name enclosed in angle brackets, ex. `<tag name>`. An **XML element** consists of a start tag, data, and an end tag. The end tag is the start tag with a forward slash `/` before the name
+  - Example: `<Department>Accounting</Department>` is an element with the tag name "Department" and data "Accounting"
+- XML elements can be nested by embedding one set of tags in another and an XML document must have a **root** element that contains all other elements
+- XML documents may have an optional first line, the **declaration**, which specifies document processing information like the XMl version of the character encoding
+  - Example: `<?xml version = "2.0" encoding = "UTF-8"?>`
+- XML tags are similar to relational columns but have a few advantages
+  - *Readable*: tag names and embedded data are readily legible in XML and easy to understand
+  - *Flexible*: tags can be easily added/dropped, which is important for semistructured data
+  - *Hierarchical*: hierarchical data is easily represented by nesting elements within elements, while this would require multiple tables/foreign keys/referential integrity rules/etc. in a relational representation
+- A primary disadvantage of XML is document size, tags are repeated for each value
+
+### JSON format
+- **JSON** stands for JavaScript Object Notation and is commonly pronounced 'JAY-sun'. JSON is similar to XML but more compact
+- A **JSON element** consists of a name and associated data, written as `"name":data`
+  - For example, `"Department":"Accounting"` is equivalent to the XML `<Department>Accounting</Department>`
+- Unlike XML, JSON elements have a type that is one of the following six
+  - *String*: series of characters enclosed in double quotes
+  - *Number*: series of digits with an optional decimal point
+  - *Boolean*: strings `true` or `false`
+  - *Null*: the string `null`
+  - *Array*: multiple data values enclosed in brackets
+  - *Object*: multiple elements enclosed in braces
+- Hierarchical data is represented in JSON by nesting elements, similar to XML
+  - Example: `"Employee":{"Name":{"First":"Sam", "Last":"Snead"},"Salary":55000}`
+- JSON is commonly used to transmit data over the internet, owing to its compact size
+- The **name** of a JSON element is commonly called a key and the **data** is commonly called a value
+
+### XML and JSON types
+- Most relational databases support XML or JSON types, but the implementations can vary widely
+- In MySQL, a JSON value is stored as an internal binary format rather than a string
+- MySQL supports comparisons of JSON values with `<`, `>` and `=` operators but not `BETWEEN` or `IN`
+- MySQL also has a number of functions that can be used to manipulate JSON
+  - `JSON_ARRAY()`: formats string or numeric data as a JSON array
+  - `JSON_DEPTH()`: determines the maximum number of levels in a JSON document hierarchy
+  - `JSON_EXTRACT()`: returns data from a JSON document
+  - `JSON_OBJECT()`: converts element names and data to a JSON document
+  - `JSON_PRETTY()`: prints a JSON document in a format that is easy to read, with one element per line
