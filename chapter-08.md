@@ -123,3 +123,53 @@
   - `JSON_EXTRACT()`: returns data from a JSON document
   - `JSON_OBJECT()`: converts element names and data to a JSON document
   - `JSON_PRETTY()`: prints a JSON document in a format that is easy to read, with one element per line
+
+## 8.4: Spatial types
+### Spatial data
+- **Spatial data** is a geometric object, like a point, line, polygon, or sphere, given as coordinates in an N-dimensional space. This spatial data is commonly written in a format called **Well-Known Text** (**WKT**), which specifies a shape name followed by vertex coordinates
+
+### Geometric and geographic data
+- Spatial data is either geometric or geographic
+  - **Geometric data** is embedded in a flat plane or 'square' three-dimensional space, called a **Cartesian coordinate system**
+  - **Geographic data** is defined with reference to the surface of the earth (such as latitude, longitude, and elevation above sea level)
+- Since the surface of the earth is curved, distance/area computations are different for geometric and geographic data. The surface of the earth can be described with many alternative coordinate systems, which are called **spatial reference systems**. These are standardized and identified with **spatial reference system identifiers** (**SRID**)
+- Many databases implement a spatial data standard from the Open Geospatial Consortium (OGC)
+- Most databases support spatial data natively or through separate, optional components. MySQL has native support for spatial types and functions with certain storage engines
+
+### Spatial types
+- MySQL types are restricted to two-dimensional coordinate systems, with support for four basic spatial types
+  - `POINT`: describes a specific location, such as an address
+  - `LINESTRING`: consists of one or more line segments and represents objects like rivers or streets. Linestrings can be closed, like a rectangle, but is one-dimensional and does not have an area
+  - `POLYGON`: describes two dimensional surfaces such as regions or postal codes. Polygons are closed and have an area. Polygons may have holes, represented by inner polygons within an outer polygon
+  - `GEOMETRY`: values can be either `POINT`, `LINESTRING`, or `POLYGON`
+- Each value of these types is a single geometric element. MySQL also supports four types that contain multiple geometric elements in each value: `MULTIPOINT`, `MULTILINESTRING`, `MULTIPOLYGON`, and `GEOMETRYCOLLECTION`
+- MySQL stores spatial values in an internal format
+  - Four bytes for the SRID
+  - Four bytes for the spatial type
+  - Eight bytes for each coordinate
+
+### Spatial functions
+- MySQL supports many functions that manipulate spatial data. These functions typically depend on a spatial reference system, so they utilize the SRID stored with each spatial value. Most of the functions have an `ST_` prefix ("spatial type")
+  - `ST_Area()`: returns the area of a polygon or multipolygon
+  - `ST_Distance()`: determines the distance between two spatial values
+  - `ST_Overlaps()`: determines if two spatial values overlap
+  - `ST_Union()`: merges two spatial values into one
+  - `ST_X()` and `ST_Y()` return the X- and Y-coordinate of a point
+- A **minimum bounding rectangle** or **MBR** is the smallest rectangle that contains a spatial value. Many spatial operations are optimized using minimum bounding rectangles
+- MySQL supports functions to manipulate MBRs, such as
+  - `ST_Envelope()`: returns the smallest rectangle that contains a spatial value
+  - `MBRContains()`: determines if the MBR of one spatial value contains the MBR of another
+  - `MBROverlaps()`: determines if the MBRs of two spatial values overlap
+- MySQL operators do not work with spatial values, but the operators must use numeric values returned by spatial functions
+
+### Spatial indexes
+- Indexes on spatial columns have several special problems
+  - *Index entries must be sorted on column values*: two- and three-dimensional spatial values do not have an obvious sort order
+  - *Index entries must be small*: a linestring or polygon value may have hundreds of bytes, which can make the index very large and slow down searches
+  - *Index entry comparisons must be fast*: spatial searches are relatively slow and require numerous arithmetic computations
+- Most databases use a special structure for spatial indexes, called an **R-tree**. This is a B+tree in which index entries contain MBRs instead of column values. The R-tree has multiple index levels (like a B+tree)
+  - *The bottom level* has one index entry for each spatial value in a column and each entry has the MBR for the value and a pointer to the block containing the value
+  - *Higher levels* consist of index entries pointing to lower levels. Each entry has a pointer to one lower-level block, along with an MBR containing all MBRs in the block
+- As spatial values are inserted/deleted, index entries are added and removed in the bottom level. Index blocks eventually fill or empty and, as with a B+tree, split or merge to maintain a balanced tree.
+- If an insertion causes a block split, index entries in one block are divided across two blocks using the **quadratic split** algorithm, which attempts to minimize the size of MBRs in index entries pointing to the two new blocks
+- In MySQL, certain storage engines will create R-tree indexes automatically for spatial columns
