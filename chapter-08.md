@@ -173,3 +173,23 @@
 - As spatial values are inserted/deleted, index entries are added and removed in the bottom level. Index blocks eventually fill or empty and, as with a B+tree, split or merge to maintain a balanced tree.
 - If an insertion causes a block split, index entries in one block are divided across two blocks using the **quadratic split** algorithm, which attempts to minimize the size of MBRs in index entries pointing to the two new blocks
 - In MySQL, certain storage engines will create R-tree indexes automatically for spatial columns
+
+## 8.5: Object types
+### Object-orientation
+- Because relational models were developed prior to the rise in popularity of object-oriented programming languages like Java/C++, most relational databases did not initially support object-oriented capabilities
+  - **Composite types**: combine several properties into one type
+  - **Methods**: functions or procedures associated with a type
+  - **Subtypes**: derived from an existing type, called a **supertype**. The subtype automatically inherits all supertype properties and methods, but may also have additional properties and methods
+  - Subtype methods may **override**, or redefine behavior from the supertype
+- A composite type is called a **class** in OOP, a subtype is called a **derived class**, and a supertype is called a **base class**
+
+### Object-relational databases
+- **Object database** adds database capabilities, like persistence and transaction management, to an object-oriented language. Many object databases exist, but they are not widely used
+  - Relational databases were already mature when object databases were developed
+  - Database management and application programming have different technical requirements, adding database capabilities to object-oriented languages is challenging/complex
+- **Object-relational mapping** (**ORM**) is a software layer between the programming language and a relational database, which converts object structures and queries to relational structures and queries. ORM is more successful than object databases
+- **Object-relational database** extends SQL with an object type, this was incorporated into the SQL standard in 1999. However, there are challenges and most relational databases do not support an object type
+- Some relational databases support subtables instead of subtypes, where a **subtable** inherits columns and constraints from another table, called a **supertable**
+
+### Object type
+- Oracle Database is a leading object-relational database
