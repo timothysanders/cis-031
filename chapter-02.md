@@ -216,6 +216,78 @@
   | Character     | 'string'              | VARCHAR(N)     | Number of characters<br>+ 1 byte if N &le; 255<br>+ 2 bytes if N &gt; 255 | Variable-length string with maximum N characters; 0 &le; N &le; 65,535                                |
   | Character     | 'string'              | TEXT           | Number of characters<br>+ 2 bytes                                         | Variable-length string with maximum 65,535 characters                                                 |
 
+## 2.6: Selecting rows
+### Operators
+- An **operator** is a symbol to compute a value from one or more other values, called **operands**
+  - Arithmetic operators compute numeric values from numeric operands
+  - Comparison operators compute logical values `TRUE` or `FALSE`. Operands may be numeric, character, and other data types
+  - Logical operators compute logical values from logical operands
+- An **unary** operator has one operand, while a **binary** operator has two operands. Most operators are binary. Logical operators are not unary. The arithmetic operator is either unary or binary
+- Operators may return NULL when either operand is NULL
+- | Type       | Operator   | Description                                                            | Example                        | Value |
+  |------------|------------|------------------------------------------------------------------------|--------------------------------|-------|
+  | Arithmetic | +          | Adds two numeric values                                                | 4 + 3                          | 7     |
+  | Arithmetic | - (unary)  | Reverses the sign of one numeric value                                 | -(-2)                          | 2     |
+  | Arithmetic | - (binary) | Subtracts one numeric value from another                               | 11 - 5                         | 6     |
+  | Arithmetic | *          | Multiplies two numeric values                                          | 3 * 5                          | 15    |
+  | Arithmetic | /          | Divides one numeric value by another                                   | 4 / 2                          | 2     |
+  | Arithmetic | % (modulo) | Divides one numeric value by another and returns the integer remainder | 5 % 2                          | 1     |
+  | Comparison | =          | Compares two values for equality                                       | 1 = 2                          | FALSE |
+  | Comparison | !=<br><>   | Compares two values for inequality                                     | 1 != 2<br>1 <> 2               | TRUE  |
+  | Comparison | <          | Compares two values with &lt;                                          | 2 &lt; 2                       | FALSE |
+  | Comparison | <=         | Compares two values with &le;                                          | 2 <= 2                         | TRUE  |
+  | Comparison | >          | Compares two values with &gt;                                          | '2019-08-13' &gt; '2021-08-13' | FALSE |
+  | Comparison | >=         | Compares two values with &ge;                                          | 'apple' &gt;= 'banana'         | FALSE |
+  | Logical    | AND        | Returns TRUE only when both values are TRUE                            | TRUE AND FALSE                 | FALSE |
+  | Logical    | OR         | Returns FALSE only when both values are FALSE                          | TRUE OR FALSE                  | TRUE  |
+  | Logical    | NOT        | Reverses a logical value                                               | NOT FALSE                      | TRUE  |
+### Expressions
+- An **expression** is a string of operators, operands, and parentheses that evaluate to a single value, and operands may be column names or fixed values. The value of the expression can be any data type
+- Simple expressions may involve a single column name or a fixed value
+- When the expression is evaluated, column names are replaced with column values for specific rows, so the expression value may have different results for different rows
+- Order of operations can affect the value of an expression, and multiple operators in an expression are evaluated in the order of **operator precedence** (operators of the same level are evaluated left to right)
+- Expressions may evaluate to NULL
+- | Precedence | Operators                                 |
+  |------------|-------------------------------------------|
+  | 1          | - (unary)                                 |
+  | 2          | ^                                         |
+  | 3          | *<br>/<br>%                               |
+  | 4          | +<br>- (binary)                           |
+  | 5          | =<br>!=<br>&lt;<br>&gt;<br>&lt;=<br>&gt;= |
+  | 6          | NOT                                       |
+  | 7          | AND                                       |
+  | 8          | OR                                        |
+### `SELECT` statement
+- The `SELECT` statement selects rows from a table, and has a `SELECT` clause and a `FROM` clause. The `FROM` clause specifies the table from which rows are selected. `SELECT` specifies one or more expressions, separated by commas, that determine the values returned for each row
+- In many queries, each expression in the `SELECT` clause is a simple column name.
+- Selecting all columns can be done by using a single asterisk
+- ```mysql
+  SELECT Expression1, Expression2, ...
+  FROM TableName;
+  
+  SELECT Column1, Column2, ...
+  FROM TableName;
+  
+  SELECT *
+  FROM TableName
+  ```
+- The `SELECT` statement returns a set of rows, called the **result table**
+- Some tables contain thousands or millions of rows and selecting all rows can take a significant amount of time. MySQL has a `LIMIT` clause that limits the number of rows returned by the statement
+- ```mysql
+  SELECT *
+  FROM City
+  LIMIT 10;
+  ```
+### `WHERE` clause
+- An expression may return a value of any data type, and a **condition** is an expression that elevates to a logical value
+- A `SELECT` statement has an optional `WHERE` clause that specifies a condition for selecting rows. A row is selected when the condition is TRUE for the row values and omitted when the condition is either FALSE or NULL
+- The `WHERE` clause follows the `FROM` clause, if there is no `WHERE` clause, all rows are selected
+- ```mysql
+  SELECT Expression1, Expression2, ...
+  FROM TableName
+  WHERE Condition;
+  ```
+
 ## 2.7: Null values
 ### NULL
 - **NULL** is a special value that represents unknown or inapplicable data. This is not the same as zero for numeric numbers or empty strings for character data types
