@@ -118,3 +118,25 @@
   | *DAY(d)*<br>*MONTH(d)*<br>*YEAR(d)*                  | Returns the day, month, or year from date *d*                                                                            | <pre><code>SELECT DAY('2016-10-25');</code></pre>returns 25<pre><code>SELECT MONTH('2016-10-25');</code></pre>returns 10<pre><code>SELECT YEAR('2016-10-25');</code></pre>returns 2016     |
   | *HOUR(t)*<br>*MINUTE(t)*<br>*SECOND(t)*              | Returns the hour, minute, or second from time *t*                                                                        | <pre><code>SELECT HOUR('22:11:45');</code></pre>returns 22<pre><code>SELECT MINUTE('22:11:45');</code></pre>returns 11<pre><code>SELECT SECOND('22:11:45');</code></pre>returns 45         |
   | *DATEDIFF(expr1, expr2)*<br>*TIMEDIFF(expr1, expr2)* | Returns *expr1* - *expr2* in number of days or time values, given *expr1* and *expr2* are date, time, or datetime values | <pre><code>SELECT DATEDIFF('2013-03-10', '2013-03-04');</code></pre>returns 6<pre><code>SELECT TIMEDIFF('10:00:00', '09:45:30');</code></pre>returns 00:14:30                              |
+
+## 3.3: Aggregate functions
+### Aggregate functions
+- An aggregate function processes values from a set of rows and returns a summary value. Common aggregate functions are shown below
+  - `COUNT()` counts the number of rows in the set
+  - `MIN()` finds the minimum value in the set
+  - `MAX()` finds the maximum value in the set
+  - `SUM()` sums all values in the set
+  - `AVG()` computes the arithmetic mean of all the values in the set
+- Aggregate functions appear in a `SELECT` clause and process all rows that satisfy the `WHERE` clause. If there is no `WHERE` clause, the aggregate function processes all rows
+
+### `GROUP BY` clause
+- Aggregate functions are commonly used with a `GROUP BY` clause
+- The **`GROUP BY`** clause consists of the `GROUP BY` keyword and one or more columns, and each simple/composite value of the column(s) becomes a group. The query then computes the aggregate function separately and returns one row for each group
+- The `GROUP BY` clause appears between the `WHERE` clause (if it exists) and the `ORDER BY` clause
+- If using `GROUP BY`, may not use columns in the `SELECT` with more than one value per group. See [MySQL Handling of GROUP BY](https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html)
+
+### `HAVING` clause
+- The `HAVING` clause is used with `GROUP BY` clause to filter group results. This optional clause follows `GROUP BY` and precedes the optional `ORDER BY` clause
+
+### Aggregate functions and NULL values
+- Aggregate functions will ignore NULL values, but keep in mind that this may be different than how certain arithmetic operators handle NULLs
